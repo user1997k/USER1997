@@ -158,6 +158,22 @@ body {
     margin-bottom: 0;
 }
 
+/* 추가됨: 노래방 이미지용 스타일 */
+.karaoke-img-container {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.karaoke-img-container img {
+    width: 200px;
+    height: 120px;
+    object-fit: cover;
+    border: 1px solid #7a7f85;
+    background: #fff;
+}
+
 h2 {
     margin: 0;
     padding: 14px 30px;
@@ -330,7 +346,11 @@ h2 {
         </div>
 
         <h2><span class="xp-icon">•</span>Status</h2>
-        <div class="section">Here I come, it's Somihongmi!</div>
+        <div class="section">
+            <ul>
+                <li>Here I come, it's Somihongmi!</li>
+            </ul>
+        </div>
 
         <h2><span class="xp-icon">•</span>Bio</h2>
         <div class="section">
@@ -369,6 +389,10 @@ h2 {
                 <li>Kumyoung Chorus HD 100S</li>
                 <li>Kumyoung FeelTONG 160N (Linux Based)</li>
             </ul>
+            <div class="karaoke-img-container">
+                <img src="karaoke1.jpg" alt="Kumyoung HD 100S Image">
+                <img src="karaoke2.jpg" alt="Kumyoung FeelTONG 160N Image">
+            </div>
         </div>
 
         <h2><span class="xp-icon">•</span>Favorite Songs (Kumyoung)</h2>
@@ -427,6 +451,7 @@ h2 {
 </div>
 
 <script>
+/* (자바스크립트 내용은 이전과 동일합니다) */
 const addressBar=document.getElementById("addressBar");
 const bootScreen=document.getElementById("bootScreen");
 const bootProgress=document.getElementById("bootProgress");
@@ -517,14 +542,3 @@ easterClose.onclick=easterOk.onclick=()=>{ easterPopup.style.display="none"; };
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
