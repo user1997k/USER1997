@@ -10,7 +10,8 @@ html { -webkit-font-smoothing: none; }
 body {
     margin: 0;
     font-family: Tahoma, "MS Sans Serif", Arial, sans-serif;
-    background: url("background.jpg") center / cover no-repeat fixed;
+    /* ✅ 배경화면 이미지가 없다면 흰색으로 나옵니다. */
+    background: #fff url("background.jpg") center / cover no-repeat fixed;
     color: #000;
 }
 
@@ -51,6 +52,9 @@ body {
     display: none;
     box-shadow: 0 6px 12px rgba(0,0,0,0.35);
     font-size: 13px;
+    /* ✅ 모달이 창 위에 뜨도록 z-index 설정 */
+    position: relative;
+    z-index: 1;
 }
 
 /* ===== Caption ===== */
@@ -126,6 +130,8 @@ body {
     height: 150px;
     object-fit: cover;
     border: 2px solid #fff;
+    /* ✅ 프로필 이미지도 확대 가능하게 커서 변경 */
+    cursor: pointer;
 }
 
 /* ===== Sections ===== */
@@ -158,7 +164,7 @@ body {
     margin-bottom: 0;
 }
 
-/* 추가됨: 노래방 이미지용 스타일 */
+/* ✅ 추가됨: 노래방 이미지용 스타일 */
 .karaoke-img-container {
     margin-top: 15px;
     display: flex;
@@ -172,6 +178,14 @@ body {
     object-fit: cover;
     border: 1px solid #7a7f85;
     background: #fff;
+    /* ✅ 클릭 가능함을 알리는 커서 */
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+/* ✅ 추가됨: 이미지 호버 시 약간 확대 효과 */
+.karaoke-img-container img:hover {
+    transform: scale(1.05);
 }
 
 h2 {
@@ -312,6 +326,61 @@ h2 {
     border:1px solid #7a7f85;
     cursor:pointer;
 }
+
+/* =========================================
+   ✅ 추가됨: 이미지 확대 모달 (Image Modal) CSS
+   ========================================= */
+#imageModal {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed; /* 화면에 고정 */
+    z-index: 20000; /* 최상위에 표시 (부팅화면보다 위) */
+    inset: 0; /* 화면 꽉 차게 */
+    background-color: rgba(0, 0, 0, 0.85); /* 반투명 검은 배경 */
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out; /* 클릭하면 닫힌다는 표시 */
+    /* ✅ 부드러운 나타나기 효과 */
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* ✅ 모달이 열렸을 때 (JS에서 클래스 추가) */
+#imageModal.open {
+    display: flex;
+    opacity: 1;
+}
+
+#modalImage {
+    max-width: 90%; /* 화면 너비의 최대 90% */
+    max-height: 90%; /* 화면 높이의 최대 90% */
+    object-fit: contain; /* 이미지 비율 유지 */
+    border: 4px solid #fff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    /* ✅ 나타날 때 살짝 커지는 애니메이션 */
+    transform: scale(0.9);
+    transition: transform 0.2s ease-in-out;
+}
+
+#imageModal.open #modalImage {
+    transform: scale(1);
+}
+
+/* ✅ 모달 닫기 버튼 (우측 상단 x) */
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: Arial, sans-serif;
+}
+.modal-close:hover {
+    color: #bbb;
+}
 </style>
 </head>
 
@@ -341,7 +410,7 @@ h2 {
     <div class="xp-content" id="content">
 
         <div class="profile">
-            <img src="profile.jpg">
+            <img src="profile.jpg" alt="Profile Image" onclick="openModal(this)">
             <h1>Somihongmi</h1>
         </div>
 
@@ -390,8 +459,8 @@ h2 {
                 <li>Kumyoung FeelTONG 160N (Linux Based)</li>
             </ul>
             <div class="karaoke-img-container">
-                <img src="karaoke1.jpg" alt="Kumyoung HD 100S Image">
-                <img src="karaoke2.jpg" alt="Kumyoung FeelTONG 160N Image">
+                <img src="karaoke1.jpg" alt="Kumyoung HD 100S" onclick="openModal(this)">
+                <img src="karaoke2.jpg" alt="Kumyoung FeelTONG 160N" onclick="openModal(this)">
             </div>
         </div>
 
@@ -450,8 +519,13 @@ h2 {
     </div>
 </div>
 
+<div id="imageModal" onclick="closeModal()">
+    <button class="modal-close">&times;</button>
+    <img id="modalImage" src="" alt="Zoomed Image">
+</div>
+
 <script>
-/* (자바스크립트 내용은 이전과 동일합니다) */
+/* (자바스크립트 내용은 이전과 동일하며, 끝부분에 모달 관련 함수가 추가되었습니다) */
 const addressBar=document.getElementById("addressBar");
 const bootScreen=document.getElementById("bootScreen");
 const bootProgress=document.getElementById("bootProgress");
@@ -538,6 +612,26 @@ closeBtn.onclick=()=>{
 /* Easter Egg */
 led.onclick=()=>{ easterPopup.style.display="flex"; };
 easterClose.onclick=easterOk.onclick=()=>{ easterPopup.style.display="none"; };
+
+/* =========================================
+   ✅ 추가됨: 이미지 확대 모달 (Image Modal) JS 함수
+   ========================================= */
+const modal = document.getElementById("imageModal");
+const modalImg = document.getElementById("modalImage");
+
+// 모달 열기 함수 (이미지 클릭 시 실행)
+function openModal(clickedImg) {
+    // 클릭된 이미지의 주소(src)를 모달 안의 이미지 주소로 복사
+    modalImg.src = clickedImg.src;
+    // 모달창 표시 (CSS 클래스 추가)
+    modal.classList.add("open");
+}
+
+// 모달 닫기 함수 (검은 배경이나 x버튼 클릭 시 실행)
+function closeModal() {
+    // 모달창 숨김 (CSS 클래스 제거)
+    modal.classList.remove("open");
+}
 </script>
 
 </body>
