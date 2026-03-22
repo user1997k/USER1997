@@ -2,38 +2,44 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Somihongmi - My Profile</title>
 
 <style>
-html { -webkit-font-smoothing: none; }
+/* ✅ 운영체제별 최적화 폰트 스택 적용 */
+html { 
+    -webkit-font-smoothing: antialiased; 
+    -moz-osx-font-smoothing: grayscale;
+}
 
 body {
     margin: 0;
-    font-family: Tahoma, "MS Sans Serif", Arial, sans-serif;
-    /* ✅ 배경화면 이미지가 없다면 흰색으로 나옵니다. */
+    padding: 10px; /* 모바일 여백 */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "MS Sans Serif", sans-serif;
     background: #fff url("background.jpg") center / cover no-repeat fixed;
     color: #000;
+    line-height: 1.5;
 }
 
 /* ===== Boot Screen ===== */
 #bootScreen {
     position: fixed;
     inset: 0;
-    background: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.9);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    font-size: 14px;
 }
 
 .boot-bar {
-    width: 320px;
+    width: 80%; /* 모바일 대응 비율 */
+    max-width: 320px;
     height: 18px;
     border: 1px solid #7a7f85;
     padding: 2px;
-    margin-top: 10px;
+    margin-top: 15px;
     background: #e6e6e6;
 }
 
@@ -45,49 +51,55 @@ body {
 
 /* ===== XP Window ===== */
 .xp-window {
+    width: 100%; /* 기본 가득 차게 */
     max-width: 900px;
-    margin: 40px auto;
+    margin: 10px auto;
     background: #d9dde2;
     border: 2px solid #7a7f85;
     display: none;
     box-shadow: 0 6px 12px rgba(0,0,0,0.35);
-    font-size: 13px;
-    /* ✅ 모달이 창 위에 뜨도록 z-index 설정 */
+    font-size: 14px; /* 가독성을 위해 살짝 키움 */
     position: relative;
     z-index: 1;
 }
 
-/* ===== Caption ===== */
+/* ===== Caption (Title Bar) ===== */
 .xp-caption {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 4px 8px;
+    padding: 6px 10px;
     background: linear-gradient(#0a246a, #3a6ea5);
     color: #fff;
     font-weight: bold;
+    user-select: none;
 }
 
+.caption-buttons { display: flex; gap: 3px; }
 .caption-buttons button {
-    width: 22px;
-    height: 18px;
-    margin-left: 2px;
+    width: 24px;
+    height: 20px;
     background: linear-gradient(#ffffff, #c6cbd0);
     border: 1px solid #7a7f85;
     cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* ===== Toolbar ===== */
 #topbar {
     display: flex;
     gap: 6px;
-    padding: 6px;
+    padding: 8px;
     background: linear-gradient(#f3f3f3, #cfd3d7);
+    border-bottom: 1px solid #7a7f85;
 }
 
 .top-btn {
-    padding: 2px 8px;
-    font-size: 12px;
+    padding: 4px 10px;
+    font-size: 14px;
     background: linear-gradient(#ffffff, #c6cbd0);
     border: 1px solid #7a7f85;
     cursor: pointer;
@@ -99,15 +111,23 @@ body {
     border: 1px solid #7a7f85;
     padding: 4px 8px;
     font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* ===== Content ===== */
+/* ===== Content Area ===== */
 .xp-content {
-    padding: 20px 32px;
+    padding: 15px 20px;
     background: #cfd3d7;
-    max-height: 3000px;
-    overflow: hidden;
-    transition: max-height 0.25s ease, opacity 0.15s, filter 0.15s;
+    max-height: 4000px;
+    overflow-y: auto;
+    transition: max-height 0.25s ease, opacity 0.15s;
+}
+
+/* 모바일 전용 패딩 조절 */
+@media (max-width: 600px) {
+    .xp-content { padding: 15px; }
 }
 
 .xp-content.minimized {
@@ -120,273 +140,148 @@ body {
 /* ===== Profile ===== */
 .profile {
     display: flex;
+    flex-wrap: wrap; /* 모바일에서 이미지가 위로 가도록 */
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     margin-bottom: 24px;
 }
 
 .profile img {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     object-fit: cover;
-    border: 2px solid #fff;
-    /* ✅ 프로필 이미지도 확대 가능하게 커서 변경 */
+    border: 3px solid #fff;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
     cursor: pointer;
+}
+
+.profile h1 {
+    margin: 0;
+    font-size: 24px;
 }
 
 /* ===== Sections ===== */
-.section {
-    padding: 18px 28px;
-    background-color: rgba(85,90,95,0.45);
-    margin-bottom: 12px;
-    border: 1px solid transparent;
-    transition: background 0.15s, border 0.15s;
-}
-
-.section:hover {
-    background-color: rgba(105,110,115,0.65);
+h2 {
+    margin: 20px 0 0 0;
+    padding: 10px 15px;
+    background: linear-gradient(to right,#ffffff,#c6cbd0);
     border: 1px solid #7a7f85;
+    border-bottom: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
 }
 
-/* 🔧 모든 리스트 간격 통일 */
-.section ul {
-    padding-left: 0;
-    margin: 0;
+.section {
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.4); /* 모바일 가독성을 위해 배경 밝게 */
+    border: 1px solid #7a7f85;
+    margin-bottom: 10px;
 }
 
-.section ul li {
-    list-style: none;
-    margin-bottom: 6px;
-    line-height: 1.6;
-}
+.section ul { padding-left: 20px; margin: 0; }
+.section ul li { margin-bottom: 8px; }
 
-.section ul li:last-child {
-    margin-bottom: 0;
-}
-
-/* ✅ 추가됨: 노래방 이미지용 스타일 */
+/* ✅ 노래방 이미지 레이아웃 최적화 */
 .karaoke-img-container {
     margin-top: 15px;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 화면 크기에 맞게 자동 정렬 */
     gap: 10px;
-    flex-wrap: wrap;
 }
 
 .karaoke-img-container img {
-    width: 200px;
-    height: 120px;
+    width: 100%;
+    aspect-ratio: 4 / 3; /* 비율 고정 */
     object-fit: cover;
     border: 1px solid #7a7f85;
     background: #fff;
-    /* ✅ 클릭 가능함을 알리는 커서 */
     cursor: pointer;
-    transition: transform 0.1s;
 }
 
-/* ✅ 추가됨: 이미지 호버 시 약간 확대 효과 */
-.karaoke-img-container img:hover {
-    transform: scale(1.05);
-}
-
-h2 {
-    margin: 0;
-    padding: 14px 30px;
-    background: linear-gradient(to right,#ffffff,#c6cbd0);
-    border-bottom: 2px solid #7a7f85;
-    font-size: 14px;
-}
-
-.xp-icon { color:#0a246a; margin-right:6px; }
+.xp-icon { color:#0a246a; margin-right:8px; font-size: 18px; }
 
 .song-code {
     font-weight: bold;
     color: #0a246a;
+    background: rgba(10, 36, 106, 0.1);
+    padding: 0 4px;
 }
 
-/* ===== Contact / Footer ===== */
-.contact-section, .footer-note {
-    padding: 20px 28px;
-    background-color: rgba(85,90,95,0.45);
-    border: 1px solid transparent;
-    transition: background 0.15s, border 0.15s;
-    line-height: 1.6;
-}
-
-.contact-section:hover, .footer-note:hover {
-    background-color: rgba(105,110,115,0.65);
+/* ===== Footer & Contact ===== */
+.contact-section {
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid #7a7f85;
+    margin-top: 10px;
 }
 
-.contact-section a,
-.section a {
-    color: #0a246a;
-    text-decoration: none;
-}
-
-.contact-section a:hover,
-.section a:hover {
-    text-decoration: underline;
-    color: #003399;
+.footer-note {
+    text-align: center;
+    padding: 20px;
+    font-size: 11px;
+    color: #555;
 }
 
 /* ===== Status Bar ===== */
 .xp-status {
-    height: 22px;
+    height: 30px; /* 모바일 터치 대응 높이 증가 */
     background: linear-gradient(#e6e6e6, #cfd3d7);
+    border-top: 1px solid #7a7f85;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 8px;
-    font-size: 11px;
+    padding: 0 10px;
+    font-size: 12px;
 }
 
-.status-left {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
+.status-left { display: flex; gap: 8px; align-items: center; }
 
 .status-led {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     background: radial-gradient(#3cff3c, #0f8a0f);
     border: 1px solid #0a5a0a;
-    cursor: pointer;
+    border-radius: 50%;
 }
 
-.blink { animation: blink 0.4s infinite; }
-@keyframes blink { 50% { opacity: 0.2; } }
-
-/* ===== Exit Overlay ===== */
-#exitOverlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    color: #fff;
-    font-size: 20px;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    font-weight: bold;
-}
-
-/* ===== Easter Egg Popup ===== */
-#easterPopup {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 12000;
-}
-
-.easter-window {
-    width: 420px;
-    background: #d9dde2;
-    border: 2px solid #7a7f85;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.35);
-}
-
-.easter-title {
-    background: linear-gradient(#0a246a,#3a6ea5);
-    color:#fff;
-    padding:4px 8px;
-    display:flex;
-    justify-content:space-between;
-    font-weight:bold;
-}
-
-.easter-title button {
-    width:22px;
-    height:18px;
-    background:linear-gradient(#fff,#c6cbd0);
-    border:1px solid #7a7f85;
-    cursor:pointer;
-}
-
-.easter-body {
-    padding:26px;
-    background:#cfd3d7;
-    text-align:center;
-    line-height:1.7;
-}
-
-.easter-actions {
-    padding:10px;
-    background:#cfd3d7;
-    text-align:center;
-    border-top:1px solid #7a7f85;
-}
-
-.easter-actions button {
-    padding:4px 16px;
-    background:linear-gradient(#fff,#c6cbd0);
-    border:1px solid #7a7f85;
-    cursor:pointer;
-}
-
-/* =========================================
-   ✅ 추가됨: 이미지 확대 모달 (Image Modal) CSS
-   ========================================= */
+/* ===== Image Modal (최적화) ===== */
 #imageModal {
-    display: none; /* 기본적으로 숨김 */
-    position: fixed; /* 화면에 고정 */
-    z-index: 20000; /* 최상위에 표시 (부팅화면보다 위) */
-    inset: 0; /* 화면 꽉 차게 */
-    background-color: rgba(0, 0, 0, 0.85); /* 반투명 검은 배경 */
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background-color: rgba(0, 0, 0, 0.9);
     justify-content: center;
     align-items: center;
-    cursor: zoom-out; /* 클릭하면 닫힌다는 표시 */
-    /* ✅ 부드러운 나타나기 효과 */
     opacity: 0;
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.3s;
 }
 
-/* ✅ 모달이 열렸을 때 (JS에서 클래스 추가) */
-#imageModal.open {
-    display: flex;
-    opacity: 1;
-}
+#imageModal.open { display: flex; opacity: 1; }
 
 #modalImage {
-    max-width: 90%; /* 화면 너비의 최대 90% */
-    max-height: 90%; /* 화면 높이의 최대 90% */
-    object-fit: contain; /* 이미지 비율 유지 */
-    border: 4px solid #fff;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    /* ✅ 나타날 때 살짝 커지는 애니메이션 */
-    transform: scale(0.9);
-    transition: transform 0.2s ease-in-out;
+    max-width: 95%;
+    max-height: 85%;
+    border: 2px solid #fff;
 }
 
-#imageModal.open #modalImage {
-    transform: scale(1);
-}
-
-/* ✅ 모달 닫기 버튼 (우측 상단 x) */
 .modal-close {
     position: absolute;
-    top: 20px;
-    right: 30px;
+    top: 10px;
+    right: 20px;
     color: #fff;
-    font-size: 40px;
-    font-weight: bold;
-    cursor: pointer;
+    font-size: 35px;
     background: none;
     border: none;
-    font-family: Arial, sans-serif;
-}
-.modal-close:hover {
-    color: #bbb;
+    cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 <div id="bootScreen">
-    <div>Starting...</div>
+    <div style="font-weight: bold; letter-spacing: 1px;">Somihongmi OS</div>
     <div class="boot-bar"><div class="boot-progress" id="bootProgress"></div></div>
 </div>
 
@@ -401,241 +296,139 @@ h2 {
     </div>
 
     <div id="topbar">
-        <div class="top-btn">◀</div>
-        <div class="top-btn">▶</div>
-        <div class="top-btn" id="refreshBtn">⟳</div>
-        <div class="address-bar" id="addressBar"></div>
+        <div class="top-btn" onclick="location.reload()">⟳</div>
+        <div class="address-bar" id="addressBar">C:\Users\Somihongmi\Documents\Profile.html</div>
     </div>
 
     <div class="xp-content" id="content">
-
         <div class="profile">
-            <img src="profile.jpg" alt="Profile Image" onclick="openModal(this)">
-            <h1>Somihongmi</h1>
+            <img src="profile.jpg" alt="Profile" onclick="openModal(this)">
+            <div>
+                <h1>Somihongmi</h1>
+                <p style="margin:5px 0; color:#555;">Welcome to my digital space.</p>
+            </div>
         </div>
 
-        <h2><span class="xp-icon">•</span>Status</h2>
+        <h2><span class="xp-icon">●</span>Status</h2>
         <div class="section">
             <ul>
                 <li>아름다운 혁명</li>
             </ul>
         </div>
 
-        <h2><span class="xp-icon">•</span>Bio</h2>
+        <h2><span class="xp-icon">●</span>Bio</h2>
         <div class="section">
             <ul>
                 <li><strong>Username:</strong> Somihongmi</li>
                 <li><strong>Interests:</strong> Electronics, 90s Korean techno music</li>
                 <li><strong>Favorite brands:</strong> Xiaomi, Kumyoung</li>
-                <li><strong>Languages:</strong> Korean, English, Chinese</li>
                 <li><strong>Location:</strong> South Korea</li>
-                <li><strong>Favorite Singers:</strong> Kwon Soyoung, Yoo Chaeyoung</li>
+                <li><strong>Singers:</strong> 권소영, 유채영</li>
             </ul>
         </div>
 
-        <h2><span class="xp-icon">•</span>Electronics I Use</h2>
-        <div class="section">
-            <ul>
-                <li>Xiaomi Gaming Monitor G27i</li>
-                <li>Xiaomi Desktop Speaker</li>
-                <li>Xiaomi Computer Monitor Light Bar</li>
-                <li>Xiaomi 12 Pro</li>
-                <li>Xiaomi 5-in-1 Type-C Hub</li>
-                <li>Xiaomi Smart Desktop Fish Tank 10L</li>
-                <li>Xiaomi Smart Band 8 Active</li>
-                <li>Xiaomi Tag</li>
-                <li>Apple iPhone 16 Plus</li>
-                <li>Apple AirPods 4</li>
-                <li>Apple AirTag</li>
-                <li>Keychron K6 Pro</li>
-                <li>Razer DeathAdder V2 X HyperSpeed</li>
-            </ul>
-        </div>
-
-        <h2><span class="xp-icon">•</span>My Karaoke Machines</h2>
+        <h2><span class="xp-icon">●</span>My Karaoke Machines</h2>
         <div class="section">
             <ul>
                 <li>Kumyoung Chorus HD 100S</li>
-                <li>Kumyoung FeelTONG 160N (Linux Based)</li>
+                <li>Kumyoung FeelTONG 160N</li>
             </ul>
             <div class="karaoke-img-container">
-                <img src="karaoke1.jpg" alt="Kumyoung HD 100S" onclick="openModal(this)">
-                <img src="karaoke2.jpg" alt="Kumyoung FeelTONG 160N" onclick="openModal(this)">
-                <img src="karaoke2-0.jpg" alt="Kumyoung FeelTONG 160N" onclick="openModal(this)">
-                <img src="karaoke2-1.jpg" alt="Kumyoung FeelTONG 160N" onclick="openModal(this)">
-                <img src="karaoke2-2.jpg" alt="Kumyoung FeelTONG 160N" onclick="openModal(this)">
+                <img src="karaoke1.jpg" alt="Machine 1" onclick="openModal(this)">
+                <img src="karaoke2.jpg" alt="Machine 2" onclick="openModal(this)">
+                <img src="karaoke2-0.jpg" alt="Machine 3" onclick="openModal(this)">
+                <img src="karaoke2-1.jpg" alt="Machine 4" onclick="openModal(this)">
+                <img src="karaoke2-2.jpg" alt="Machine 5" onclick="openModal(this)">
             </div>
         </div>
 
-        <h2><span class="xp-icon">•</span>Favorite Songs (Kumyoung)</h2>
+        <h2><span class="xp-icon">●</span>Favorite Songs</h2>
         <div class="section">
             <ul>
-                <li>Techno Club Vol.1 <span class="song-code">(97100)</span></li>
-                <li>Techno Club Vol.2 <span class="song-code">(97101)</span></li>
-                <li>Techno Club Vol.3 <span class="song-code">(97102)</span></li>
-                <li>Techno Club Vol.4 <span class="song-code">(97103)</span></li>
-                <li>Techno Club Vol.5 <span class="song-code">(97104)</span></li>
-                <li>Techno Club Vol.6 <span class="song-code">(97105)</span></li>
-                <li>Techno Club Vol.7 <span class="song-code">(97106)</span></li>
-                <li>(<a href="https://youtu.be/Df3MYsOxqvY?si=F7HukmBlhpXCf4TO" target="_blank">▶ YouTube</a>)</li>
-                <li>Kwon Soyoung – Choice of Cinderella <span class="song-code">(6060)</span></li>
-                <li>Yoo Chaeyoung – Emotion <span class="song-code">(6061)</span></li>
+                <li>Techno Club Vol.1-7 <span class="song-code">97100~97106</span></li>
+                <li>권소영 – Choice of Cinderella <span class="song-code">6060</span></li>
+                <li>유채영 – Emotion <span class="song-code">6061</span></li>
+                <li><a href="https://youtu.be/Df3MYsOxqvY" target="_blank" style="color: #0a246a; text-decoration: underline;">Watch on YouTube</a></li>
             </ul>
         </div>
 
-        <h2><span class="xp-icon">•</span>Contact</h2>
         <div class="contact-section">
             <strong>Discord:</strong> somihongmi
         </div>
 
-        <div class="footer-note"> 2026 Made by Somihongmi<br>
-        </div>
-
+        <div class="footer-note">© 2026 Somihongmi. All rights reserved.</div>
     </div>
 
     <div class="xp-status">
         <div class="status-left">
             <div class="status-led" id="led"></div>
             <span id="statusText">Ready</span>
-            <span id="onlineTime"></span>
+            <span id="onlineTime" style="margin-left:5px; border-left:1px solid #7a7f85; padding-left:5px;"></span>
         </div>
-        <span id="clock"></span>
-    </div>
-</div>
-
-<div id="exitOverlay">Saving settings...</div>
-
-<div id="easterPopup">
-    <div class="easter-window">
-        <div class="easter-title">
-            <span>System Message</span>
-            <button id="easterClose">×</button>
-        </div>
-        <div class="easter-body">
-            수 없이 많은 별들중에서<br>
-            당신을 만날 수 있는건<br>
-            결코 우연이라 할 수 없어
-        </div>
-        <div class="easter-actions">
-            <button id="easterOk">확인</button>
-        </div>
+        <span id="clock">00:00</span>
     </div>
 </div>
 
 <div id="imageModal" onclick="closeModal()">
     <button class="modal-close">&times;</button>
-    <img id="modalImage" src="" alt="Zoomed Image">
+    <img id="modalImage" src="">
 </div>
 
 <script>
-/* (자바스크립트 내용은 이전과 동일하며, 끝부분에 모달 관련 함수가 추가되었습니다) */
-const addressBar=document.getElementById("addressBar");
-const bootScreen=document.getElementById("bootScreen");
-const bootProgress=document.getElementById("bootProgress");
-const xpWindow=document.getElementById("xpWindow");
-const content=document.getElementById("content");
-const led=document.getElementById("led");
-const statusText=document.getElementById("statusText");
-const onlineTime=document.getElementById("onlineTime");
-const clock=document.getElementById("clock");
-const minBtn=document.getElementById("minBtn");
-const maxBtn=document.getElementById("maxBtn");
-const refreshBtn=document.getElementById("refreshBtn");
-const closeBtn=document.getElementById("closeBtn");
-const exitOverlay=document.getElementById("exitOverlay");
-
-const easterPopup=document.getElementById("easterPopup");
-const easterClose=document.getElementById("easterClose");
-const easterOk=document.getElementById("easterOk");
-
-addressBar.textContent=location.href;
-
-/* Boot */
-let p=0;
-const boot=setInterval(()=>{
-    p+=10;
-    bootProgress.style.width=p+"%";
-    if(p>=100){
-        clearInterval(boot);
-        bootScreen.style.display="none";
-        xpWindow.style.display="block";
-        startOnline();
+/* 부팅 로직 */
+let p = 0;
+const bootProgress = document.getElementById("bootProgress");
+const bootInterval = setInterval(() => {
+    p += Math.random() * 15; // 랜덤하게 증가해서 더 자연스러움
+    if(p >= 100) {
+        p = 100;
+        clearInterval(bootInterval);
+        setTimeout(() => {
+            document.getElementById("bootScreen").style.display = "none";
+            document.getElementById("xpWindow").style.display = "block";
+            startOnline();
+        }, 500);
     }
-},150);
+    bootProgress.style.width = p + "%";
+}, 100);
 
-/* Online */
-let start;
-function startOnline(){
-    start=Date.now();
-    setInterval(()=>{
-        const s=Math.floor((Date.now()-start)/1000);
-        const m=String(Math.floor(s/60)).padStart(2,"0");
-        const sec=String(s%60).padStart(2,"0");
-        onlineTime.textContent=`Online: ${m}:${sec}`;
-    },1000);
+/* 시계 및 온라인 시간 */
+function startOnline() {
+    const start = Date.now();
+    setInterval(() => {
+        const s = Math.floor((Date.now() - start) / 1000);
+        const m = String(Math.floor(s / 60)).padStart(2, "0");
+        const sec = String(s % 60).padStart(2, "0");
+        document.getElementById("onlineTime").textContent = `Online: ${m}:${sec}`;
+        
+        const d = new Date();
+        document.getElementById("clock").textContent = 
+            String(d.getHours()).padStart(2, "0") + ":" + 
+            String(d.getMinutes()).padStart(2, "0");
+    }, 1000);
 }
 
-/* Clock */
-setInterval(()=>{
-    const d=new Date();
-    clock.textContent=
-        String(d.getHours()).padStart(2,"0")+":"+
-        String(d.getMinutes()).padStart(2,"0");
-},1000);
-
-/* Min / Max */
-let minimized=false;
-minBtn.onclick=()=>{ if(!minimized){content.classList.add("minimized");minimized=true;} };
-maxBtn.onclick=()=>{ if(minimized){content.classList.remove("minimized");minimized=false;} };
-
-/* Refresh */
-refreshBtn.onclick=()=>{
-    statusText.textContent="Refreshing...";
-    start=Date.now();
-    led.classList.add("blink");
-    content.style.filter="brightness(0.6)";
-    setTimeout(()=>content.style.filter="",500);
-    setTimeout(()=>{
-        led.classList.remove("blink");
-        statusText.textContent="Ready";
-    },1200);
+/* 최소화/최대화 */
+const content = document.getElementById("content");
+document.getElementById("minBtn").onclick = () => content.classList.add("minimized");
+document.getElementById("maxBtn").onclick = () => content.classList.remove("minimized");
+document.getElementById("closeBtn").onclick = () => {
+    if(confirm("프로필 창을 닫으시겠습니까?")) {
+        document.getElementById("xpWindow").style.opacity = "0.3";
+        alert("시스템이 종료되었습니다.");
+    }
 };
 
-/* Exit */
-closeBtn.onclick=()=>{
-    exitOverlay.style.display="flex";
-    exitOverlay.textContent="Saving settings...";
-    setTimeout(()=>exitOverlay.textContent="Shutting down...",1200);
-    setTimeout(()=>{
-        exitOverlay.textContent="";
-        exitOverlay.style.background="#000";
-    },2400);
-};
-
-/* Easter Egg */
-led.onclick=()=>{ easterPopup.style.display="flex"; };
-easterClose.onclick=easterOk.onclick=()=>{ easterPopup.style.display="none"; };
-
-/* =========================================
-   ✅ 추가됨: 이미지 확대 모달 (Image Modal) JS 함수
-   ========================================= */
+/* 이미지 모달 기능 */
 const modal = document.getElementById("imageModal");
 const modalImg = document.getElementById("modalImage");
-
-// 모달 열기 함수 (이미지 클릭 시 실행)
-function openModal(clickedImg) {
-    // 클릭된 이미지의 주소(src)를 모달 안의 이미지 주소로 복사
-    modalImg.src = clickedImg.src;
-    // 모달창 표시 (CSS 클래스 추가)
+function openModal(el) {
+    modalImg.src = el.src;
     modal.classList.add("open");
 }
-
-// 모달 닫기 함수 (검은 배경이나 x버튼 클릭 시 실행)
 function closeModal() {
-    // 모달창 숨김 (CSS 클래스 제거)
     modal.classList.remove("open");
 }
 </script>
-
 </body>
 </html>
