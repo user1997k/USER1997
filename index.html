@@ -414,7 +414,7 @@ h2 {
         <h2><span class="xp-icon">•</span>Status</h2>
         <div class="section">
             <ul>
-                <li>Golden Luxury</li>
+                <li></li>
             </ul>
         </div>
 
@@ -511,7 +511,7 @@ h2 {
             결코 우연이라 할 수 없어
         </div>
         <div class="easter-actions">
-            <button id="easterOk">확인</button>
+            <button id="easterOk">OK</button>
         </div>
     </div>
 </div>
@@ -522,7 +522,6 @@ h2 {
 </div>
 
 <script>
-/* (자바스크립트 내용은 이전과 동일하며, 끝부분에 모달 관련 함수가 추가되었습니다) */
 const addressBar=document.getElementById("addressBar");
 const bootScreen=document.getElementById("bootScreen");
 const bootProgress=document.getElementById("bootProgress");
@@ -610,9 +609,6 @@ closeBtn.onclick=()=>{
 led.onclick=()=>{ easterPopup.style.display="flex"; };
 easterClose.onclick=easterOk.onclick=()=>{ easterPopup.style.display="none"; };
 
-/* =========================================
-   ✅ 추가됨: 이미지 확대 모달 (Image Modal) JS 함수
-   ========================================= */
 const modal = document.getElementById("imageModal");
 const modalImg = document.getElementById("modalImage");
 
