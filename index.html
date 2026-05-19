@@ -464,7 +464,7 @@ h2 {
             <ul>
                 <li>Kumyoung Techno Club <span class="song-code">(97000)</span></li>
                 <li>(<a href="https://youtu.be/Df3MYsOxqvY?si=F7HukmBlhpXCf4TO" target="_blank">▶ YouTube</a>)</li>
-                <li>TJ Techno<span class="song-code">(30088)</span></li>
+                <li>TJ Techno <span class="song-code">(30088)</span></li>
                 <li>(<a href="https://youtu.be/pJZ7rF9iyYg?si=FgeaGc3taMZBXpkJ" target="_blank">▶ YouTube</a>)</li>
             </ul>
         </div>
@@ -604,17 +604,12 @@ easterClose.onclick=easterOk.onclick=()=>{ easterPopup.style.display="none"; };
 const modal = document.getElementById("imageModal");
 const modalImg = document.getElementById("modalImage");
 
-// 모달 열기 함수 (이미지 클릭 시 실행)
 function openModal(clickedImg) {
-    // 클릭된 이미지의 주소(src)를 모달 안의 이미지 주소로 복사
     modalImg.src = clickedImg.src;
-    // 모달창 표시 (CSS 클래스 추가)
     modal.classList.add("open");
 }
 
-// 모달 닫기 함수 (검은 배경이나 x버튼 클릭 시 실행)
 function closeModal() {
-    // 모달창 숨김 (CSS 클래스 제거)
     modal.classList.remove("open");
 }
 </script>
