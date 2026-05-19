@@ -131,7 +131,7 @@ body {
     width: 150px;
     height: 150px;
     object-fit: cover;
-    border: 2px solid #fff;
+    border: 2px solid #666;
     cursor: pointer;
 }
 
@@ -165,7 +165,6 @@ body {
 }
 
 /* ===== Shared Images ===== */
-.karaoke-img-container,
 .vrc-worlds {
     margin-top: 15px;
     display: flex;
@@ -173,7 +172,6 @@ body {
     flex-wrap: wrap;
 }
 
-.karaoke-img-container img,
 .vrc-worlds img {
     width: 200px;
     height: 120px;
@@ -184,7 +182,6 @@ body {
     transition: transform 0.1s;
 }
 
-.karaoke-img-container img:hover,
 .vrc-worlds img:hover {
     transform: scale(1.05);
 }
@@ -198,11 +195,6 @@ h2 {
 }
 
 .xp-icon { color:#66aaff; margin-right:6px; }
-
-.song-code {
-    font-weight: bold;
-    color: #66aaff;
-}
 
 /* ===== Contact / Footer ===== */
 .contact-section, .footer-note {
@@ -456,7 +448,9 @@ h2 {
         <div class="section">
             <ul>
                 <li>Golden Room</li>
-                <li>(<a href="https://vrchat.com/home/world/wrld_772bb4e6-8ac0-435c-a6d5-7635886629dc/info" target="_blank">▶ URL</a>)</li></ul>
+                <li>(<a href="https://vrchat.com/home/world/wrld_772bb4e6-8ac0-435c-a6d5-7635886629dc/info"
+   target="_blank"
+   class="song-link">▶ URL</a>)</li></ul>
             
             <div class="vrc-worlds">
                 <img src="golden room.jpg" alt="Golden Room" onclick="openModal(this)">
