@@ -164,12 +164,29 @@ body {
     margin-bottom: 0;
 }
 
-/* ===== Karaoke Images ===== */
-.karaoke-img-container {
+/* ===== Shared Images ===== */
+.karaoke-img-container,
+.vrc-worlds {
     margin-top: 15px;
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+}
+
+.karaoke-img-container img,
+.vrc-worlds img {
+    width: 200px;
+    height: 120px;
+    object-fit: cover;
+    border: 1px solid #555;
+    background: #111;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.karaoke-img-container img:hover,
+.vrc-worlds img:hover {
+    transform: scale(1.05);
 }
 
 .karaoke-img-container img {
